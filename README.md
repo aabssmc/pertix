@@ -1,9 +1,9 @@
 # pertix
 
 ## needed:
-- [mod menu](https://modrinth.com/mod/modmenu): (9.0.0 and up)
-- [cloth config api](https://modrinth.com/mod/cloth-config): (13.0.121 and up)
-- [fabric api](https://modrinth.com/mod/fabric-api): (0.96.11+1.20.4 and up)
+- [mod menu](https://modrinth.com/mod/modmenu)
+- [cloth config api](https://modrinth.com/mod/cloth-config)
+- [fabric api](https://modrinth.com/mod/fabric-api)
 
 ## features:
 - auto jump | automatically jumps at the edge of a block with a adjustable offset
