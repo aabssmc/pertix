@@ -3,6 +3,5 @@
 
   "key.pertix.togglejump": "(JUMP) Toggle Jump",
   "key.pertix.hideplayers": "(HIDE PLAYERS) Hide Players",
-  "key.pertix.renderingEnabled": "(HEALTH INDICATORS) Toggle Render Hearts",
-  "key.pertix.heartStackingEnabled": "(HEALTH INDICATORS) Toggle Heart Stacking"
+  "key.pertix.renderingEnabled": "(HEALTH INDICATORS) Toggle Render Hearts"
 }
