@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "pertix",
+  "version": "${version}",
+  "name": "Pertix",
+  "description": "aabss' util mod",
+  "authors": ["aabss"],
+  "license": "All-Rights-Reserved",
+  "icon": "assets/pertix/icon.png",
+  "key.pertix.reload": "Reload",
+  "environment": "*",
+  "entrypoints": {
+    "client": ["lol.aabss.pertix.client.PertixClient"],
+    "main": ["lol.aabss.pertix.Pertix"],
+    "modmenu":  ["lol.aabss.pertix.PertixMenuApiImpl"]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  },
+  "mixins": [
+    "pertix.mixin.json"
+  ],
+  "custom": {
+    "modmenu": {
+      "parent": {
+        "id": "pertix",
+        "name": "Pertix",
+        "description": "aabss' util mod",
+        "icon": "assets/pertix/icon.png"
+      }
+    }
+  }
+}
