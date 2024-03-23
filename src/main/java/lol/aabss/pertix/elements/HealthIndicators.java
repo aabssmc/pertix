@@ -8,10 +8,7 @@ import org.lwjgl.glfw.GLFW;
 public class HealthIndicators {
 
     private static KeyBinding renderingbind;
-    private static KeyBinding heartstackingbind;
-
     private static boolean renderingenabled = false;
-    private static boolean heartstackingenabled = false;
 
     public static void loadBinds(){
         renderingbind = KeyBindingHelper.registerKeyBinding(
@@ -22,22 +19,10 @@ public class HealthIndicators {
                         "key.category.pertix"
                 )
         );
-        heartstackingbind = KeyBindingHelper.registerKeyBinding(
-                new KeyBinding(
-                        "key.pertix.heartStackingEnabled",
-                        InputUtil.Type.KEYSYM,
-                        GLFW.GLFW_KEY_END,
-                        "key.category.pertix"
-                )
-        );
     }
 
     public static KeyBinding getRenderingBind(){
         return renderingbind;
-    }
-
-    public static KeyBinding getHeartStackingBind(){
-        return heartstackingbind;
     }
 
     // --
@@ -46,18 +31,10 @@ public class HealthIndicators {
         renderingenabled = !renderingenabled;
     }
 
-    public static void toggleHeartStacking(){
-        heartstackingenabled = !heartstackingenabled;
-    }
-
     // --
 
     public static boolean getRendering(){
         return renderingenabled;
-    }
-
-    public static boolean getHeartStacking(){
-        return heartstackingenabled;
     }
 
 }

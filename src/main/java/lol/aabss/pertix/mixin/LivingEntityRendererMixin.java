@@ -63,7 +63,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             int heartsTotal = heartsNormal + heartsYellow;
 
 
-            int heartsPerRow = HealthIndicators.getHeartStacking() ? 10 : heartsTotal + 1;
+            int heartsPerRow = 10;
 
             int pixelsTotal = Math.min(heartsTotal, heartsPerRow) * 8 + 1;
             float maxX = pixelsTotal / 2.0f;
