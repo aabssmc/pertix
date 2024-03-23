@@ -2,8 +2,10 @@ package lol.aabss.pertix;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import lol.aabss.pertix.config.Config;
 import lol.aabss.pertix.config.ModConfigs;
+import lol.aabss.pertix.elements.AutoJump;
+import lol.aabss.pertix.elements.HealthIndicators;
+import lol.aabss.pertix.elements.HidePlayers;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -26,23 +28,22 @@ public class PertixMenuApiImpl implements ModMenuApi {
             generalCategory.addEntry(ConfigEntryBuilder.create()
                     .startDoubleField(Text.literal("(JUMP) Jump Offset"), ModConfigs.JUMP_OFFSET)
                     .setDefaultValue(() -> ModConfigs.JUMP_OFFSET)
-                    .setSaveConsumer(newValue -> ModConfigs.JUMP_OFFSET = newValue)
+                    .setSaveConsumer(AutoJump::saveConfig)
                     .build());
             generalCategory.addEntry(ConfigEntryBuilder.create()
                     .startBooleanToggle(Text.literal("(HEALTH INDICATORS) Show Mob Health"), ModConfigs.SHOW_MOB_HEALTH)
                     .setDefaultValue(() -> ModConfigs.SHOW_MOB_HEALTH)
-                    .setSaveConsumer(newValue -> ModConfigs.SHOW_MOB_HEALTH = newValue)
+                    .setSaveConsumer(HealthIndicators::saveConfig)
                     .build());
             generalCategory.addEntry(ConfigEntryBuilder.create()
-                    .startStrField(Text.literal("(HIDE PLAYERS) Whitelisted Players"), ModConfigs.WHITELISTED_PLAYERS)
+                    .startStrList(Text.literal("(HIDE PLAYERS) Whitelisted Players"), ModConfigs.WHITELISTED_PLAYERS)
                     .setDefaultValue(() -> ModConfigs.WHITELISTED_PLAYERS)
-                            .setTooltip(Text.literal("SPLIT BY COMMAS"))
-                    .setSaveConsumer(newValue -> ModConfigs.WHITELISTED_PLAYERS = newValue)
+                    .setSaveConsumer(HidePlayers::saveConfig)
                     .build());
-
             return builder.build();
         };
     }
+
 
     @Override
     public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {

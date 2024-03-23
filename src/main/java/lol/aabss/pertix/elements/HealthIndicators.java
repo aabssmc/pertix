@@ -1,5 +1,6 @@
 package lol.aabss.pertix.elements;
 
+import lol.aabss.pertix.config.ModConfigs;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -35,6 +36,12 @@ public class HealthIndicators {
 
     public static boolean getRendering(){
         return renderingenabled;
+    }
+
+    public static void saveConfig(boolean bool){
+        ModConfigs.SHOW_MOB_HEALTH = bool;
+        ModConfigs.JSON.put("showmobhealth", bool);
+        ModConfigs.saveConfig();
     }
 
 }

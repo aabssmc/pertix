@@ -1,5 +1,6 @@
 package lol.aabss.pertix.elements;
 
+import lol.aabss.pertix.config.ModConfigs;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -46,5 +47,11 @@ public class AutoJump {
 
     public static void toggleJump(){
         jumpbindtoggle = !jumpbindtoggle;
+    }
+
+    public static void saveConfig(double offset){
+        JUMP_OFFSET = offset;
+        ModConfigs.JSON.put("jumpoffset", offset);
+        ModConfigs.saveConfig();
     }
 }

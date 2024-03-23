@@ -41,10 +41,16 @@ public class HidePlayers {
 
     public static List<Text> getWhitelistedPlayers(){
         List<Text> whitelistedlist = new ArrayList<>();
-        String[] whitelisted = ModConfigs.WHITELISTED_PLAYERS.split(",");
+        String[] whitelisted = ModConfigs.WHITELISTED_PLAYERS.toArray(String[]::new);
         for (String player : whitelisted){
-            whitelistedlist.add(Text.of(player.replaceAll(" ", "")));
+            whitelistedlist.add(Text.of(player.replaceAll(" ", "").toLowerCase()));
         }
         return whitelistedlist;
+    }
+
+    public static void saveConfig(List<String> newValue){
+        ModConfigs.WHITELISTED_PLAYERS = newValue;
+        ModConfigs.JSON.put("whitelistedplayers", newValue);
+        ModConfigs.saveConfig();
     }
 }
