@@ -15,8 +15,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityRenderDispatcherMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private <E extends Entity> void render(E entity, double x, double y, double z, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if(entity instanceof PlayerEntity player && !player.isMainPlayer() && HidePlayers.getPlayersHidden()) {
-            ci.cancel();
+        if (!(entity instanceof PlayerEntity player)) {
+            return;
         }
+        if (player.isMainPlayer() || !HidePlayers.getPlayersHidden()){
+            return;
+        }
+        if (HidePlayers.getWhitelistedPlayers().contains(player.getName())) {
+            return;
+        }
+        ci.cancel();
     }
 }

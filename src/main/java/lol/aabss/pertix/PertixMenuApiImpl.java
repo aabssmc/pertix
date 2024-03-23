@@ -24,14 +24,20 @@ public class PertixMenuApiImpl implements ModMenuApi {
 
             ConfigCategory generalCategory = builder.getOrCreateCategory(Text.literal("General"));
             generalCategory.addEntry(ConfigEntryBuilder.create()
-                    .startDoubleField(Text.literal("Jump Offset"), ModConfigs.JUMP_OFFSET)
+                    .startDoubleField(Text.literal("(JUMP) Jump Offset"), ModConfigs.JUMP_OFFSET)
                     .setDefaultValue(() -> ModConfigs.JUMP_OFFSET)
                     .setSaveConsumer(newValue -> ModConfigs.JUMP_OFFSET = newValue)
                     .build());
             generalCategory.addEntry(ConfigEntryBuilder.create()
-                    .startBooleanToggle(Text.literal("Show Mob Health"), ModConfigs.SHOW_MOB_HEALTH)
+                    .startBooleanToggle(Text.literal("(HEALTH INDICATORS) Show Mob Health"), ModConfigs.SHOW_MOB_HEALTH)
                     .setDefaultValue(() -> ModConfigs.SHOW_MOB_HEALTH)
                     .setSaveConsumer(newValue -> ModConfigs.SHOW_MOB_HEALTH = newValue)
+                    .build());
+            generalCategory.addEntry(ConfigEntryBuilder.create()
+                    .startStrField(Text.literal("(HIDE PLAYERS) Whitelisted Players"), ModConfigs.WHITELISTED_PLAYERS)
+                    .setDefaultValue(() -> ModConfigs.WHITELISTED_PLAYERS)
+                            .setTooltip(Text.literal("SPLIT BY COMMAS"))
+                    .setSaveConsumer(newValue -> ModConfigs.WHITELISTED_PLAYERS = newValue)
                     .build());
 
             return builder.build();
