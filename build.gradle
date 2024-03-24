@@ -24,6 +24,7 @@ dependencies {
     }
     modApi "com.terraformersmc:modmenu:${project.mod_menu}"
     implementation 'org.json:json:20240303'
+
 }
 
 processResources {

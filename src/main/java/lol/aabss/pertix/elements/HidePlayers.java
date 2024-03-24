@@ -12,8 +12,8 @@ import java.util.List;
 
 public class HidePlayers {
 
-    private static boolean playershidden = false;
-    private static KeyBinding hideplayersbind;
+    public static boolean playershidden = false;
+    public static KeyBinding hideplayersbind;
 
     public static void loadBinds(){
         hideplayersbind = KeyBindingHelper.registerKeyBinding(
@@ -24,18 +24,6 @@ public class HidePlayers {
                         "key.category.pertix"
                 )
         );
-    }
-
-    public static KeyBinding getPlayersHiddenBind(){
-        return hideplayersbind;
-    }
-
-    public static boolean getPlayersHidden(){
-        return playershidden;
-    }
-
-    public static void toggleHidePlayers(){
-        playershidden = !playershidden;
     }
 
 

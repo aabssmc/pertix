@@ -13,8 +13,8 @@ import static lol.aabss.pertix.config.ModConfigs.JUMP_OFFSET;
 
 public class AutoJump {
 
-    private static boolean jumpbindtoggle = false;
-    private static KeyBinding jumpbind;
+    public static boolean jumpbindtoggle = false;
+    public static KeyBinding jumpbind;
 
     public static void autoJump(MinecraftClient client, PlayerEntity p){
         if (jumpbindtoggle && p != null && client.world != null && p.isOnGround() && !p.isSneaking()) {
@@ -35,18 +35,6 @@ public class AutoJump {
                         "key.category.pertix"
                 )
         );
-    }
-
-    public static KeyBinding getJumpBind(){
-        return jumpbind;
-    }
-
-    public static boolean getJumpBindToggle(){
-        return jumpbindtoggle;
-    }
-
-    public static void toggleJump(){
-        jumpbindtoggle = !jumpbindtoggle;
     }
 
     public static void saveConfig(double offset){

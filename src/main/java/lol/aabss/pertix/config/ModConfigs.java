@@ -21,19 +21,16 @@ public class ModConfigs {
     public static double JUMP_OFFSET;
     public static boolean SHOW_MOB_HEALTH;
     public static List<String> WHITELISTED_PLAYERS = new ArrayList<>();
-
+    public static List<String> CHECK_PLAYERS = new ArrayList<>();
     public static void registerConfigs() {
         try {
             CONFIG = new File(FabricLoader.getInstance().getConfigDir().toString(), "pertix.json");
             if (CONFIG.createNewFile()) {
                 JSONObject json = new JSONObject();
-                json.put("jumpoffset", 0.001);
-                json.put("showmobhealth", true);
-                json.put("whitelistedplayers", List.of("Notch", "Dinnerbone"));
-
-                JUMP_OFFSET = 0.001;
-                SHOW_MOB_HEALTH = true;
-                WHITELISTED_PLAYERS = List.of("Notch", "Dinnerbone");
+                JUMP_OFFSET = put("jumpoffset", 0.001d, json);
+                SHOW_MOB_HEALTH = put("showmobhealth", true, json);
+                WHITELISTED_PLAYERS = put("whitelistedplayers", List.of("Notch", "Dinnerbone"), json);
+                CHECK_PLAYERS = put("checkplayers", List.of("Skeppy", "BadBoyHalo"), json);
                 try (FileWriter fileWriter = new FileWriter(CONFIG.getPath())) {
                     fileWriter.write(json.toString(4));
                 } catch (IOException e) {
@@ -64,32 +61,41 @@ public class ModConfigs {
             } catch (JSONException ignored){
                 JSON = new JSONObject();
             }
-            try {
-                JUMP_OFFSET = JSON.getDouble("jumpoffset");
-            } catch (JSONException ignored){
-                JSON.put("jumpoffset", 0.001);
-                JUMP_OFFSET = 0.001;
-            }
-            try {
-                SHOW_MOB_HEALTH = JSON.getBoolean("showmobhealth");
-            } catch (JSONException ignored){
-                JSON.put("showmobhealth", true);
-                SHOW_MOB_HEALTH = true;
-            }
-            try {
-                JSONArray array = JSON.getJSONArray("whitelistedplayers");
-                List<String> whitelistedplayers = new ArrayList<>();
-                for (int i = 0; i < array.length(); i++) {
-                    whitelistedplayers.add(array.getString(i));
-                }
-                WHITELISTED_PLAYERS = whitelistedplayers;
-            } catch (JSONException ignored){
-                JSON.put("whitelistedplayers", List.of("Notch", "Dinnerbone"));
-                WHITELISTED_PLAYERS = List.of("Notch", "Dinnerbone");
-            }
+            JUMP_OFFSET = Double.parseDouble(String.valueOf(loadObject("jumpoffset", 0.001d)));
+            SHOW_MOB_HEALTH = loadObject("showmobhealth", true);
+            WHITELISTED_PLAYERS = loadObject("whitelistedplayers", List.of("Notch", "Dinnerbone"));
+            CHECK_PLAYERS = loadObject("checkplayers", List.of("Skeppy", "BadBoyHalo"));
             saveConfig();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static <T>T loadObject(String key, T defaultValue){
+        if (defaultValue instanceof List<?>) {
+            try {
+                JSONArray array = JSON.getJSONArray(key);
+                List<String> list = new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    list.add(array.getString(i));
+                }
+                return (T) list;
+            } catch (JSONException ignored) {
+                JSON.put(key, defaultValue);
+                return defaultValue;
+            }
+        } else{
+            try {
+                return (T) JSON.get(key);
+            } catch (JSONException ignored){
+                JSON.put(key, defaultValue);
+                return defaultValue;
+            }
+        }
+    }
+
+    public static <T>T put(String key, T defaultValue, JSONObject json) {
+        json.put(key, defaultValue);
+        return defaultValue;
     }
 }

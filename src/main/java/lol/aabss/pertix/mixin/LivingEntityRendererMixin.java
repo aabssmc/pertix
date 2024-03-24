@@ -21,6 +21,7 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
@@ -45,7 +46,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
                 return;
             }
         }
-        if (player != null && HealthIndicators.getRendering() && player.getVehicle() != livingEntity && livingEntity != player && !livingEntity.isInvisibleTo(player)) {
+        if (player != null && HealthIndicators.renderingenabled && player.getVehicle() != livingEntity && livingEntity != player && !livingEntity.isInvisibleTo(player)) {
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();
 
@@ -110,11 +111,11 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
                             if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
                                 matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
                             }
-                            /* # 1.20.1 and below code
-                            if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(2) != null) {
-                                matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
-                            }
-                             */
+                            //1.20.1 and below code
+                            //if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(2) != null) {
+                            //    matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
+                            //}
+
                         }
 
                         matrixStack.multiply(this.dispatcher.getRotation());

@@ -8,8 +8,8 @@ import org.lwjgl.glfw.GLFW;
 
 public class HealthIndicators {
 
-    private static KeyBinding renderingbind;
-    private static boolean renderingenabled = false;
+    public static KeyBinding renderingbind;
+    public static boolean renderingenabled = false;
 
     public static void loadBinds(){
         renderingbind = KeyBindingHelper.registerKeyBinding(
@@ -20,22 +20,6 @@ public class HealthIndicators {
                         "key.category.pertix"
                 )
         );
-    }
-
-    public static KeyBinding getRenderingBind(){
-        return renderingbind;
-    }
-
-    // --
-
-    public static void toggleRendering(){
-        renderingenabled = !renderingenabled;
-    }
-
-    // --
-
-    public static boolean getRendering(){
-        return renderingenabled;
     }
 
     public static void saveConfig(boolean bool){

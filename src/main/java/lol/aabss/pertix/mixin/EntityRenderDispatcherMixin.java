@@ -19,7 +19,7 @@ public class EntityRenderDispatcherMixin {
         if (!(entity instanceof PlayerEntity player)) {
             return;
         }
-        if (player.isMainPlayer() || !HidePlayers.getPlayersHidden()){
+        if (player.isMainPlayer() || !HidePlayers.playershidden){
             return;
         }
         if (HidePlayers.getWhitelistedPlayers().contains(Text.of(player.getName().getString().toLowerCase()))) {
