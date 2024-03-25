@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.realms.Ping;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -83,13 +82,13 @@ public class PertixClient implements ClientModInitializer {
                         return;
                     }
                     List<String> players = checkForPlayers();
-                    if (players != null){
-                        p.sendMessage(Text.literal(Pertix.formatList(players) + (players.size() == 1 ? " is " : " are ")+"online!"));
+                    if (!players.isEmpty()){
+                        p.sendMessage(Text.literal("§6[PERTIX] §e"+Pertix.formatList(players) + (players.size() == 1 ? " is " : " are ")+"online!"));
                         p.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.MASTER, 10, 1);
                     }
                 }
             }
-        }, 0L, 20L*1000L);
+        }, 0L, 11L*1000L);
 
         ClientReceiveMessageEvents.ALLOW_CHAT.register((message, signedMessage, sender, params, receptionTimestamp) ->  {
             ClientPlayerEntity p = MinecraftClient.getInstance().player;

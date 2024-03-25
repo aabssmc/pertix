@@ -13,6 +13,8 @@ import java.util.List;
 
 public class PlayerChecker {
 
+    public static List<String> recent = new ArrayList<>();
+
     public static boolean playerchecker = false;
     public static KeyBinding playercheckerbind;
 
@@ -30,24 +32,30 @@ public class PlayerChecker {
     public static List<String> checkForPlayers(){
         World world = MinecraftClient.getInstance().world;
         if (world == null || ModConfigs.CHECK_PLAYERS.isEmpty()){
-            return null;
+            return List.of();
         }
         List<String> players = new ArrayList<>();
         world.getPlayers().forEach((playerEntity -> players.add(playerEntity.getName().getString().toLowerCase())));
         List<String> onlineplayers = new ArrayList<>();
         for (String p : ModConfigs.CHECK_PLAYERS){
             if (players.contains(p.toLowerCase())){
-                onlineplayers.add(p);
+                if (!recent.contains(p)) {
+                    onlineplayers.add(p);
+                    recent.add(p);
+                }
+            } else {
+                recent.remove(p);
             }
         }
-        if (onlineplayers.isEmpty()) {
-            return null;
+        if (!onlineplayers.isEmpty()) {
+            onlineplayers.removeAll(recent);
+            onlineplayers.addAll(recent);
         }
         return onlineplayers;
     }
 
     public static void saveConfig(List<String> newValue){
-        ModConfigs.WHITELISTED_PLAYERS = newValue;
+        ModConfigs.CHECK_PLAYERS = newValue;
         ModConfigs.JSON.put("checkplayers", newValue);
         ModConfigs.saveConfig();
     }
