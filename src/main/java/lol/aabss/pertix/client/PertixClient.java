@@ -7,13 +7,24 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -115,6 +126,50 @@ public class PertixClient implements ClientModInitializer {
             }
         });
 
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) ->  {
+            ClientPlayerEntity p = MinecraftClient.getInstance().player;
+            if (p != null){
+                String temp = newVersion();
+                if (temp != null) {
+                    String currentver = temp.split("\\|\\|")[0];
+                    String newver = temp.split("\\|\\|")[1];
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            p.sendMessage(
+                                    Text.literal("§6[PERTIX]§r §eThere is a new update available!§r §7(v"+currentver+" -> v"+newver+")")
+                                            .setStyle(
+                                                    Style.EMPTY.withHoverEvent(
+                                                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eClick to open download."))
+                                                    ).withClickEvent(
+                                                            new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/aabssmc/pertix/releases/tag/"+newver)
+                                                    )
+                                            ),
+                                    false
+                            );
+                        }
+                    }, 4L*1000L);
+                }
+            }
+        });
+    }
+
+    public static String newVersion() {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.github.com/repos/aabssmc/pertix/releases/latest"))
+                .build();
+        try {
+            String body = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).get().body();
+            String newver = new JSONObject(body).getString("tag_name");
+            String currentver = FabricLoader.getInstance().getModContainer("pertix").get().getMetadata().getVersion().getFriendlyString();
+            if (!Objects.equals(newver, currentver)) {
+                return currentver+"||"+newver;
+            }
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
