@@ -6,8 +6,10 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.realms.Ping;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -19,6 +21,7 @@ import java.util.TimerTask;
 import static lol.aabss.pertix.elements.AutoJump.*;
 import static lol.aabss.pertix.elements.HealthIndicators.*;
 import static lol.aabss.pertix.elements.HidePlayers.*;
+import static lol.aabss.pertix.elements.Pinging.*;
 import static lol.aabss.pertix.elements.PlayerChecker.*;
 
 @Environment(EnvType.CLIENT)
@@ -30,6 +33,7 @@ public class PertixClient implements ClientModInitializer {
         HidePlayers.loadBinds();
         HealthIndicators.loadBinds();
         PlayerChecker.loadBinds();
+        Pinging.loadBinds();
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ClientPlayerEntity p = client.player;
@@ -61,6 +65,13 @@ public class PertixClient implements ClientModInitializer {
                     p.sendMessage(Text.literal((playerchecker ? "§aenabled" : "§cdisabled") + " player checker"), true);
                 }
             }
+            // --
+            while (pingingbind.wasPressed()) {
+                pinging = !pinging;
+                if (p != null) {
+                    p.sendMessage(Text.literal((pinging ? "§aenabled" : "§cdisabled") + " chat pinging"), true);
+                }
+            }
         });
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -79,6 +90,32 @@ public class PertixClient implements ClientModInitializer {
                 }
             }
         }, 0L, 20L*1000L);
+
+        ClientReceiveMessageEvents.ALLOW_CHAT.register((message, signedMessage, sender, params, receptionTimestamp) ->  {
+            ClientPlayerEntity p = MinecraftClient.getInstance().player;
+            if (p == null){
+                return true;
+            }
+            if (!pinging){
+                return true;
+            }
+            return !containsPlayer(message);
+        });
+
+        ClientReceiveMessageEvents.CHAT_CANCELED.register((message, signedMessage, sender, params, receptionTimestamp) ->  {
+            ClientPlayerEntity p = MinecraftClient.getInstance().player;
+            if (p == null){
+                return;
+            }
+            if (sender == null){
+                p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
+                p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
+            } else if (sender.getId() != p.getUuid()) {
+                p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
+                p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
+            }
+        });
+
     }
 }
 

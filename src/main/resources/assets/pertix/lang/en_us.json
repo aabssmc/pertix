@@ -4,5 +4,6 @@
   "key.pertix.togglejump": "(JUMP) Toggle Jump",
   "key.pertix.hideplayers": "(HIDE PLAYERS) Hide Players",
   "key.pertix.renderingEnabled": "(HEALTH INDICATORS) Toggle Render Hearts",
-  "key.pertix.toggleplayerchecker": "(PLAYER CHECKER) Toggle Player Checker"
+  "key.pertix.toggleplayerchecker": "(PLAYER CHECKER) Toggle Player Checker",
+  "key.pertix.pinging": "(PINGING) Toggle Chat Pinging"
 }
