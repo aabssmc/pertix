@@ -144,29 +144,22 @@ public class PertixClient implements ClientModInitializer {
                 if (temp != null) {
                     String currentver = temp.split("\\|\\|")[0];
                     String newver = temp.split("\\|\\|")[1];
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            p.sendMessage(
-                                    Text.literal("§6[PERTIX]§r §eThere is a new update available!§r §7(v" + currentver + " -> v" + newver + ")")
-                                            .setStyle(
-                                                    Style.EMPTY.withHoverEvent(
-                                                            new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eClick to open download."))
-                                                    ).withClickEvent(
-                                                            new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/aabssmc/pertix/releases/tag/" + newver)
-                                                    )
-                                            ),
-                                    false
-                            );
-                        }
-                    }, 4L * 1000L);
+                    p.sendMessage(
+                            Text.literal("§6[PERTIX]§r §eThere is a new update available!§r §7(v" + currentver + " -> v" + newver + ")")
+                                    .setStyle(
+                                            Style.EMPTY.withHoverEvent(
+                                                    new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eClick to open download."))
+                                            ).withClickEvent(
+                                                    new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/aabssmc/pertix/releases/tag/" + newver)
+                                            )
+                                    ),
+                            false
+                    );
                 }
             }
         });
 
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            JOIN_TIME=0;
-        });
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> JOIN_TIME=0);
 
     }
 
