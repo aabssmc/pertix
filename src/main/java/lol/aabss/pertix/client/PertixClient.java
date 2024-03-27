@@ -23,10 +23,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import static lol.aabss.pertix.elements.AutoJump.*;
 import static lol.aabss.pertix.elements.HealthIndicators.*;
@@ -36,6 +33,8 @@ import static lol.aabss.pertix.elements.PlayerChecker.*;
 
 @Environment(EnvType.CLIENT)
 public class PertixClient implements ClientModInitializer {
+
+    public static int JOIN_TIME=0;
 
     @Override
     public void onInitializeClient() {
@@ -50,7 +49,7 @@ public class PertixClient implements ClientModInitializer {
             while (jumpbind.wasPressed()) {
                 jumpbindtoggle = !jumpbindtoggle;
                 if (p != null) {
-                    p.sendMessage(Text.literal((jumpbindtoggle ? "§aenabled" : "§cdisabled")+" auto jump"), false);
+                    p.sendMessage(Text.literal((jumpbindtoggle ? "§aenabled" : "§cdisabled")+" auto jump"), true);
                 }
             }
             autoJump(client, p);
@@ -127,8 +126,18 @@ public class PertixClient implements ClientModInitializer {
         });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) ->  {
+            new Timer().scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (MinecraftClient.getInstance().getServer() != null) {
+                        JOIN_TIME = JOIN_TIME + 1;
+                    } else {
+                        this.cancel();
+                    }
+                }
+            }, 0L, 1000L);
             ClientPlayerEntity p = MinecraftClient.getInstance().player;
-            if (p != null){
+            if (p != null) {
                 String temp = newVersion();
                 if (temp != null) {
                     String currentver = temp.split("\\|\\|")[0];
@@ -137,21 +146,26 @@ public class PertixClient implements ClientModInitializer {
                         @Override
                         public void run() {
                             p.sendMessage(
-                                    Text.literal("§6[PERTIX]§r §eThere is a new update available!§r §7(v"+currentver+" -> v"+newver+")")
+                                    Text.literal("§6[PERTIX]§r §eThere is a new update available!§r §7(v" + currentver + " -> v" + newver + ")")
                                             .setStyle(
                                                     Style.EMPTY.withHoverEvent(
                                                             new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eClick to open download."))
                                                     ).withClickEvent(
-                                                            new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/aabssmc/pertix/releases/tag/"+newver)
+                                                            new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/aabssmc/pertix/releases/tag/" + newver)
                                                     )
                                             ),
                                     false
                             );
                         }
-                    }, 4L*1000L);
+                    }, 4L * 1000L);
                 }
             }
         });
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) ->   {
+            JOIN_TIME=0;
+        });
+
     }
 
     public static String newVersion() {

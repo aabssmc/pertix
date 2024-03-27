@@ -1,7 +1,9 @@
 package lol.aabss.pertix;
 
 import lol.aabss.pertix.config.ModConfigs;
+import lol.aabss.pertix.elements.commands.JoinTime;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -12,6 +14,7 @@ public class Pertix implements ModInitializer {
     public void onInitialize() {
         ModConfigs.registerConfigs();
         LoggerFactory.getLogger("pertix").info("pertix is loading.");
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> JoinTime.register(dispatcher));
     }
 
     public static String formatList(List<?> list){
