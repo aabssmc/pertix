@@ -47,6 +47,9 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             }
         }
         if (player != null && HealthIndicators.renderingenabled && player.getVehicle() != livingEntity && livingEntity != player && !livingEntity.isInvisibleTo(player)) {
+            if (!player.canSee(livingEntity)){
+                return;
+            }
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();
 
