@@ -2,34 +2,20 @@ package lol.aabss.pertix.elements.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ServerInfo;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
 
 
-
-
-
-
-
-
 // purple boat if you know what i mena
 // heh ya
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -39,15 +25,14 @@ import static lol.aabss.pertix.client.PertixClient.JOIN_TIME;
 
 public class JoinTime {
 
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher){
-        dispatcher.register(CommandManager.literal("jointime")
-                .executes(JoinTime::run)
-        );
+    public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess access) {
+        dispatcher.register(ClientCommandManager.literal("jointime").executes(context -> run()));
     }
 
-    private static int run(CommandContext<ServerCommandSource> context) {
-        ServerPlayerEntity p = context.getSource().getPlayer();
-        MinecraftServer s = context.getSource().getServer();
+
+    private static int run() {
+        ClientPlayerEntity p = MinecraftClient.getInstance().player;
+        ServerInfo s = MinecraftClient.getInstance().getCurrentServerEntry();
         if (s != null && p != null){
             String smalltime = time(JOIN_TIME, true);
             String bigtime = time(JOIN_TIME, false);

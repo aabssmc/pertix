@@ -7,26 +7,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import org.json.JSONObject;
-
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.*;
 
+import static lol.aabss.pertix.Pertix.sendUpdateMessage;
 import static lol.aabss.pertix.elements.AutoJump.*;
 import static lol.aabss.pertix.elements.HealthIndicators.*;
 import static lol.aabss.pertix.elements.HidePlayers.*;
@@ -37,6 +26,7 @@ import static lol.aabss.pertix.elements.PlayerChecker.*;
 public class PertixClient implements ClientModInitializer {
 
     public static int JOIN_TIME=0;
+    public static Timer JOIN_TIMER;
 
     @Override
     public void onInitializeClient() {
@@ -128,57 +118,32 @@ public class PertixClient implements ClientModInitializer {
         });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) ->  {
-            new Timer().scheduleAtFixedRate(new TimerTask() {
+            if (JOIN_TIMER != null){
+                JOIN_TIMER.cancel();
+                JOIN_TIMER = null;
+                JOIN_TIME = 0;
+            }
+            JOIN_TIMER = new Timer();
+            JOIN_TIMER.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    if (MinecraftClient.getInstance().getServer() != null) {
+                    if (MinecraftClient.getInstance().getCurrentServerEntry() != null) {
                         JOIN_TIME = JOIN_TIME + 1;
                     } else {
-                        this.cancel();
+                        JOIN_TIME = 0;
+                        JOIN_TIMER.cancel();
+                        JOIN_TIMER = null;
                     }
                 }
             }, 0L, 1000L);
-            ClientPlayerEntity p = MinecraftClient.getInstance().player;
-            if (p != null) {
-                String temp = newVersion();
-                if (temp != null) {
-                    String currentver = temp.split("\\|\\|")[0];
-                    String newver = temp.split("\\|\\|")[1];
-                    p.sendMessage(
-                            Text.literal("§6[PERTIX]§r §eThere is a new update available!§r §7(v" + currentver + " -> v" + newver + ")")
-                                    .setStyle(
-                                            Style.EMPTY.withHoverEvent(
-                                                    new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("§eClick to open download."))
-                                            ).withClickEvent(
-                                                    new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/aabssmc/pertix/releases/tag/" + newver)
-                                            )
-                                    ),
-                            false
-                    );
-                }
-            }
+            sendUpdateMessage();
+        });
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            JOIN_TIME=0;
+            JOIN_TIMER.cancel();
+            JOIN_TIMER = null;
         });
 
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> JOIN_TIME=0);
-
-    }
-
-    public static String newVersion() {
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.github.com/repos/aabssmc/pertix/releases/latest"))
-                .build();
-        try {
-            String body = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()).get().body();
-            String newver = new JSONObject(body).getString("tag_name");
-            String currentver = FabricLoader.getInstance().getModContainer("pertix").get().getMetadata().getVersion().getFriendlyString();
-            if (!Objects.equals(newver, currentver)) {
-                return currentver+"||"+newver;
-            }
-            return null;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }
 
