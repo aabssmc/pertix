@@ -10,6 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lol.aabss.pertix.HeartType;
 import lol.aabss.pertix.config.ModConfigs;
 import lol.aabss.pertix.elements.HealthIndicators;
+import lol.aabss.pertix.util.PlayerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -22,6 +23,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,6 +44,9 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (!(livingEntity instanceof PlayerEntity)){
             if (!ModConfigs.SHOW_MOB_HEALTH){
+                return;
+            }
+            if (PlayerUtils.isNpc(livingEntity.getName())){
                 return;
             }
         }

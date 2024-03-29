@@ -111,7 +111,7 @@ public class PertixClient implements ClientModInitializer {
             if (sender == null){
                 p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
                 p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
-            } else if (sender.getId() != p.getUuid()) {
+            } else if (!Objects.equals(sender.getName(), p.getName().getString())) {
                 p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
                 p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
             }

@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class Pinging {
 
-    public static boolean pinging = false;
+    public static boolean pinging = true;
     public static KeyBinding pingingbind;
 
     public static void loadBinds(){

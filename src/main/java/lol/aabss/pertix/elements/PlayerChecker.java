@@ -3,6 +3,7 @@ package lol.aabss.pertix.elements;
 import lol.aabss.pertix.config.ModConfigs;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.world.World;
@@ -15,7 +16,7 @@ public class PlayerChecker {
 
     public static List<String> recent = new ArrayList<>();
 
-    public static boolean playerchecker = false;
+    public static boolean playerchecker = true;
     public static KeyBinding playercheckerbind;
 
     public static void loadBinds(){
@@ -30,12 +31,12 @@ public class PlayerChecker {
     }
 
     public static List<String> checkForPlayers(){
-        World world = MinecraftClient.getInstance().world;
-        if (world == null || ModConfigs.CHECK_PLAYERS.isEmpty()){
+        ServerInfo info = MinecraftClient.getInstance().getCurrentServerEntry();
+        if (info == null || ModConfigs.CHECK_PLAYERS.isEmpty()){
             return List.of();
         }
         List<String> players = new ArrayList<>();
-        world.getPlayers().forEach((playerEntity -> players.add(playerEntity.getName().getString().toLowerCase())));
+        info.playerListSummary.forEach((playerEntity -> players.add(playerEntity.getString().toLowerCase())));
         List<String> onlineplayers = new ArrayList<>();
         for (String p : ModConfigs.CHECK_PLAYERS){
             if (players.contains(p.toLowerCase())){

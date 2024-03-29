@@ -2,8 +2,10 @@ package lol.aabss.pertix.util;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -81,5 +83,13 @@ public class PlayerUtils {
         }
     }
      */
+
+    public static boolean isNpc(Text p){
+        return (p.contains(Text.literal("[")) ||
+                p.contains(Text.literal("]")) ||
+                p.contains(Text.literal(" ")) ||
+                p.contains(Text.literal("-"))
+        );
+    }
 
 }
