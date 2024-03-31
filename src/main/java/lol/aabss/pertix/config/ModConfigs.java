@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("CallToPrintStackTrace")
 public class ModConfigs {
     public static File CONFIG;
     public static JSONObject JSON;
@@ -34,30 +33,20 @@ public class ModConfigs {
                 try (FileWriter fileWriter = new FileWriter(CONFIG.getPath())) {
                     fileWriter.write(json.toString(4));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new IOException(e);
                 }
                 JSON = json;
-            } else {
-                loadJson();
-            }
+                return;
+            } loadJson();
         } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveConfig(){
-        try (FileWriter fileWriter = new FileWriter(CONFIG.getPath())) {
-            fileWriter.write(JSON.toString(4));
-        } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public static void loadJson(){
         try (FileReader fileReader = new FileReader(CONFIG.getPath())) {
-            JSONTokener tokener = new JSONTokener(fileReader);
             try {
-                JSON = new JSONObject(tokener);
+                JSON = new JSONObject(new JSONTokener(fileReader));
             } catch (JSONException ignored){
                 JSON = new JSONObject();
             }
@@ -67,30 +56,31 @@ public class ModConfigs {
             CHECK_PLAYERS = loadObject("checkplayers", List.of("Skeppy", "BadBoyHalo"));
             saveConfig();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
+    // ---------------
+
+    public static void saveConfig(){
+        try (FileWriter fileWriter = new FileWriter(CONFIG.getPath())) {
+            fileWriter.write(JSON.toString(4));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     public static <T>T loadObject(String key, T defaultValue){
-        if (defaultValue instanceof List<?>) {
-            try {
-                JSONArray array = JSON.getJSONArray(key);
-                List<String> list = new ArrayList<>();
-                for (int i = 0; i < array.length(); i++) {
-                    list.add(array.getString(i));
-                }
-                return (T) list;
-            } catch (JSONException ignored) {
-                JSON.put(key, defaultValue);
-                return defaultValue;
-            }
-        } else{
-            try {
+        try {
+            if (defaultValue instanceof List<?>) {
+                return (T) JSON.getJSONArray(key).toList();
+            } else {
                 return (T) JSON.get(key);
-            } catch (JSONException ignored){
-                JSON.put(key, defaultValue);
-                return defaultValue;
             }
+        } catch (JSONException ignored){
+            JSON.put(key, defaultValue);
+            return defaultValue;
         }
     }
 
