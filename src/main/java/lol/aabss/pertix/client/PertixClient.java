@@ -5,6 +5,7 @@ import lol.aabss.pertix.elements.*;
 import lol.aabss.pertix.elements.commands.JoinTime;
 import lol.aabss.pertix.elements.commands.PlayerInfo;
 import lol.aabss.pertix.elements.commands.ServerInfo;
+import lol.aabss.pertix.elements.commands.WorldInfo;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -44,6 +45,7 @@ public class PertixClient implements ClientModInitializer {
             JoinTime.register(dispatcher, registryAccess);
             PlayerInfo.register(dispatcher, registryAccess);
             ServerInfo.register(dispatcher, registryAccess);
+            WorldInfo.register(dispatcher, registryAccess);
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
