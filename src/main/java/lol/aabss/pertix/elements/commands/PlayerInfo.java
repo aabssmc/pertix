@@ -40,6 +40,7 @@ public class PlayerInfo {
                     §7Custom Name: §e<CUSTOMNAME>
                     §7Location: §e<LOCATION>
                     §7Dimension: §e<DIMENSION>
+                    §7Health: §e<HEALTH>
                     §7Main Hand: §e<MAINHAND>
                     §7Luck: §e<LUCK>
                     §7§m----------------------"""
@@ -49,6 +50,7 @@ public class PlayerInfo {
                     .replaceAll("<CUSTOMNAME>", (player.getCustomName() != null ? player.getCustomName().getString() : player.getName().getString()))
                     .replaceAll("<LOCATION>", getLocation(player))
                     .replaceAll("<DIMENSION>", player.getWorld().getRegistryKey().getValue().toString())
+                    .replaceAll("<HEALTH>", player.getHealth()+"/"+player.getMaxHealth())
                     .replaceAll("<MAINHAND>", player.getMainArm().name())
                     .replaceAll("<LUCK>", String.valueOf(player.getLuck()));
             client.sendMessage(Text.literal(message));

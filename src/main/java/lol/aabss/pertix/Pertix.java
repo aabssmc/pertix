@@ -3,6 +3,7 @@ package lol.aabss.pertix;
 import lol.aabss.pertix.config.ModConfigs;
 import lol.aabss.pertix.elements.commands.PlayerInfo;
 import lol.aabss.pertix.elements.commands.JoinTime;
+import lol.aabss.pertix.elements.commands.ServerInfo;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -30,8 +31,6 @@ public class Pertix implements ModInitializer {
     public void onInitialize() {
         ModConfigs.registerConfigs();
         LoggerFactory.getLogger("pertix").info("pertix is loading.");
-        ClientCommandRegistrationCallback.EVENT.register(JoinTime::register);
-        ClientCommandRegistrationCallback.EVENT.register(PlayerInfo::register);
         newVersion = newVersion();
     }
 

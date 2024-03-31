@@ -2,9 +2,13 @@ package lol.aabss.pertix.client;
 
 import lol.aabss.pertix.Pertix;
 import lol.aabss.pertix.elements.*;
+import lol.aabss.pertix.elements.commands.JoinTime;
+import lol.aabss.pertix.elements.commands.PlayerInfo;
+import lol.aabss.pertix.elements.commands.ServerInfo;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -36,6 +40,12 @@ public class PertixClient implements ClientModInitializer {
         PlayerChecker.loadBinds();
         Pinging.loadBinds();
 
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            JoinTime.register(dispatcher, registryAccess);
+            PlayerInfo.register(dispatcher, registryAccess);
+            ServerInfo.register(dispatcher, registryAccess);
+        });
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ClientPlayerEntity p = client.player;
             while (jumpbind.wasPressed()) {
@@ -44,7 +54,9 @@ public class PertixClient implements ClientModInitializer {
                     p.sendMessage(Text.literal((jumpbindtoggle ? "§aenabled" : "§cdisabled")+" auto jump"), true);
                 }
             }
-            autoJump(client, p);
+            if (jumpbindtoggle) {
+                autoJump(client, p);
+            }
             // --
             while (hideplayersbind.wasPressed()){
                 playershidden = !playershidden;
@@ -108,13 +120,8 @@ public class PertixClient implements ClientModInitializer {
             if (p == null){
                 return;
             }
-            if (sender == null){
-                p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
-                p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
-            } else if (!Objects.equals(sender.getName(), p.getName().getString())) {
-                p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
-                p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
-            }
+            p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
+            p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
         });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) ->  {

@@ -17,7 +17,7 @@ public class AutoJump {
     public static KeyBinding jumpbind;
 
     public static void autoJump(MinecraftClient client, PlayerEntity p){
-        if (jumpbindtoggle && p != null && client.world != null && p.isOnGround() && !p.isSneaking()) {
+        if (p != null && client.world != null && p.isOnGround() && !p.isSneaking()) {
             Box playerBox = p.getBoundingBox();
             Box adjustedBox = playerBox.offset(0, -JUMP_OFFSET, 0).expand(-JUMP_OFFSET, 0, -JUMP_OFFSET);
             if (client.world.isSpaceEmpty(p, adjustedBox)) {
