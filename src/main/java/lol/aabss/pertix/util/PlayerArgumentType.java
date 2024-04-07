@@ -8,14 +8,11 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import lol.aabss.pertix.Pertix;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
@@ -46,10 +43,9 @@ public class PlayerArgumentType implements ArgumentType<PlayerEntity> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        final String remaining = builder.getRemaining();
         if (context.getSource() instanceof FabricClientCommandSource source) {
             List<String> names = new ArrayList<>();
-            source.getPlayer().getWorld().getPlayers().forEach(pl -> {
+            source.getPlayer().clientWorld.getPlayers().forEach(pl -> {
                 if (!PlayerUtils.isNpc(pl.getName())) {
                     names.add(pl.getName().getString());
                 }
@@ -58,8 +54,6 @@ public class PlayerArgumentType implements ArgumentType<PlayerEntity> {
         }
         return Suggestions.empty();
     }
-
-
 
     public static PlayerArgumentType player() {
         return new PlayerArgumentType();

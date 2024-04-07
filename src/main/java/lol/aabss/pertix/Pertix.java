@@ -1,11 +1,7 @@
 package lol.aabss.pertix;
 
 import lol.aabss.pertix.config.ModConfigs;
-import lol.aabss.pertix.elements.commands.PlayerInfo;
-import lol.aabss.pertix.elements.commands.JoinTime;
-import lol.aabss.pertix.elements.commands.ServerInfo;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -16,10 +12,12 @@ import net.minecraft.text.Text;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,16 +52,16 @@ public class Pertix implements ModInitializer {
         }
     }
 
-    public static String formatList(List<?> list){
+    public static String formatList(Object[] list){
         StringBuilder string = new StringBuilder();
         int i = 0;
-        if (list.size() == 1){
-            return list.get(0).toString();
+        if (list.length == 1){
+            return list[0].toString();
         }
         for (Object obj : list){
-            if (i == list.size() - 1) {
+            if (i == list.length - 1) {
                 string.append(obj);
-            } else if (i == list.size() - 2) {
+            } else if (i == list.length - 2) {
                 string.append(obj).append(" and ");
             } else {
                 string.append(obj).append(", ");
