@@ -52,6 +52,18 @@ public class PertixMenuApiImpl implements ModMenuApi {
                     .setSaveConsumer(PlayerChecker::saveConfig)
                     .build());
 
+            ConfigCategory filterWords = builder.getOrCreateCategory(Text.literal("Filter Words"));
+            filterWords.addEntry(ConfigEntryBuilder.create()
+                    .startStrList(Text.literal("(FILTER WORDS) Filtered Words"), ModConfigs.FILTERED_WORDS)
+                    .setDefaultValue(() -> ModConfigs.FILTERED_WORDS)
+                    .setSaveConsumer(FilterWords::saveWords)
+                    .build());
+            filterWords.addEntry(ConfigEntryBuilder.create()
+                    .startStrField(Text.literal("(FILTER WORDS) Filler Word"), ModConfigs.FILLER_WORD)
+                    .setDefaultValue(() -> ModConfigs.FILLER_WORD)
+                    .setSaveConsumer(FilterWords::saveFiller)
+                    .build());
+
             return builder.build();
         };
     }

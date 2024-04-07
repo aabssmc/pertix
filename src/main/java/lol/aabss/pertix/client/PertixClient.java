@@ -22,6 +22,8 @@ import java.util.*;
 
 import static lol.aabss.pertix.Pertix.sendUpdateMessage;
 import static lol.aabss.pertix.elements.AutoJump.*;
+import static lol.aabss.pertix.elements.FilterWords.filterwordsbind;
+import static lol.aabss.pertix.elements.FilterWords.filterwordstoggle;
 import static lol.aabss.pertix.elements.HealthIndicators.*;
 import static lol.aabss.pertix.elements.HidePlayers.*;
 import static lol.aabss.pertix.elements.Pinging.*;
@@ -40,6 +42,7 @@ public class PertixClient implements ClientModInitializer {
         HealthIndicators.loadBinds();
         PlayerChecker.loadBinds();
         Pinging.loadBinds();
+        FilterWords.loadBinds();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             JoinTime.register(dispatcher, registryAccess);
@@ -87,6 +90,13 @@ public class PertixClient implements ClientModInitializer {
                     p.sendMessage(Text.literal((pinging ? "§aenabled" : "§cdisabled") + " chat pinging"), true);
                 }
             }
+            // --
+            while (filterwordsbind.wasPressed()) {
+                filterwordstoggle = !filterwordstoggle;
+                if (p != null) {
+                    p.sendMessage(Text.literal((filterwordstoggle ? "§aenabled" : "§cdisabled") + " filtered words"), true);
+                }
+            }
         });
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -99,7 +109,7 @@ public class PertixClient implements ClientModInitializer {
                     }
                     List<String> players = checkForPlayers();
                     if (!players.isEmpty()){
-                        p.sendMessage(Text.literal("§6[PERTIX] §e"+Pertix.formatList(players) + (players.size() == 1 ? " is " : " are ")+"online!"));
+                        p.sendMessage(Text.literal("§6[PERTIX] §e"+Pertix.formatList(players.toArray(String[]::new)) + (players.size() == 1 ? " is " : " are ")+"online!"));
                         p.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.MASTER, 10, 1);
                     }
                 }
@@ -111,9 +121,6 @@ public class PertixClient implements ClientModInitializer {
             if (p == null){
                 return true;
             }
-            if (!pinging){
-                return true;
-            }
             return !containsPlayer(message);
         });
 
@@ -123,7 +130,21 @@ public class PertixClient implements ClientModInitializer {
                 return;
             }
             p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
-            p.sendMessage(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
+            Text newtext;
+            if (pinging) {
+                if (filterwordstoggle) {
+                    newtext = FilterWords.filterText(Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r")));
+                } else {
+                    newtext = Text.literal(message.getString().replaceAll(p.getName().getString(), p.getName().getString() + "§r"));
+                }
+            } else {
+                if (filterwordstoggle) {
+                    newtext = FilterWords.filterText(message);
+                } else {
+                    newtext = message;
+                }
+            }
+            p.sendMessage(newtext);
         });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) ->  {
