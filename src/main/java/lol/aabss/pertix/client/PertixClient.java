@@ -22,7 +22,6 @@ import net.minecraft.text.Text;
 import java.util.*;
 
 import static lol.aabss.pertix.Pertix.sendUpdateMessage;
-import static lol.aabss.pertix.elements.AutoJump.*;
 import static lol.aabss.pertix.elements.FilterWords.filterwordsbind;
 import static lol.aabss.pertix.elements.FilterWords.filterwordstoggle;
 import static lol.aabss.pertix.elements.HealthIndicators.*;
