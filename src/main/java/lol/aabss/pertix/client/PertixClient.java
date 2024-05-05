@@ -1,6 +1,7 @@
 package lol.aabss.pertix.client;
 
 import lol.aabss.pertix.Pertix;
+import lol.aabss.pertix.PertixMenuApiImpl;
 import lol.aabss.pertix.elements.*;
 import lol.aabss.pertix.elements.commands.JoinTime;
 import lol.aabss.pertix.elements.commands.PlayerInfo;
@@ -37,7 +38,7 @@ public class PertixClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        AutoJump.loadBinds();
+        //AutoJump.loadBinds();
         HidePlayers.loadBinds();
         HealthIndicators.loadBinds();
         PlayerChecker.loadBinds();
@@ -53,7 +54,7 @@ public class PertixClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ClientPlayerEntity p = client.player;
-            while (jumpbind.wasPressed()) {
+            /*while (jumpbind.wasPressed()) {
                 jumpbindtoggle = !jumpbindtoggle;
                 if (p != null) {
                     p.sendMessage(Text.literal((jumpbindtoggle ? "§aenabled" : "§cdisabled")+" auto jump"), true);
@@ -61,7 +62,7 @@ public class PertixClient implements ClientModInitializer {
             }
             if (jumpbindtoggle) {
                 autoJump(client, p);
-            }
+            }*/
             // --
             while (hideplayersbind.wasPressed()){
                 playershidden = !playershidden;

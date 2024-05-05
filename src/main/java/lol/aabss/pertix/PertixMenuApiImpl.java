@@ -7,6 +7,7 @@ import lol.aabss.pertix.elements.*;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 import java.util.HashMap;
@@ -22,12 +23,13 @@ public class PertixMenuApiImpl implements ModMenuApi {
                     .setParentScreen(parent)
                     .setTitle(Text.literal("Pertix Mod Config"));
 
-            ConfigCategory jump = builder.getOrCreateCategory(Text.literal("Auto Jump"));
+            /*ConfigCategory jump = builder.getOrCreateCategory(Text.literal("Auto Jump"));
             jump.addEntry(ConfigEntryBuilder.create()
                     .startDoubleField(Text.literal("(JUMP) Jump Offset"), ModConfigs.JUMP_OFFSET)
                     .setDefaultValue(() -> ModConfigs.JUMP_OFFSET)
                     .setSaveConsumer(AutoJump::saveConfig)
                     .build());
+             */
 
             ConfigCategory health = builder.getOrCreateCategory(Text.literal("Health Indicators"));
             health.addEntry(ConfigEntryBuilder.create()
@@ -63,7 +65,6 @@ public class PertixMenuApiImpl implements ModMenuApi {
                     .setDefaultValue(() -> ModConfigs.FILLER_WORD)
                     .setSaveConsumer(FilterWords::saveFiller)
                     .build());
-
             return builder.build();
         };
     }

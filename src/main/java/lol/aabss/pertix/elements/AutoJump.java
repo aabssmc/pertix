@@ -9,11 +9,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
 import org.lwjgl.glfw.GLFW;
 
-import static lol.aabss.pertix.config.ModConfigs.JUMP_OFFSET;
-
 public class AutoJump {
 
-    public static boolean jumpbindtoggle = false;
+/*    public static boolean jumpbindtoggle = false;
     public static KeyBinding jumpbind;
 
     public static void autoJump(MinecraftClient client, PlayerEntity p){
@@ -41,5 +39,5 @@ public class AutoJump {
         JUMP_OFFSET = offset;
         ModConfigs.JSON.put("jumpoffset", offset);
         ModConfigs.saveConfig();
-    }
+    }*/
 }

@@ -16,7 +16,7 @@ public class ModConfigs {
     public static File CONFIG;
     public static JSONObject JSON;
 
-    public static double JUMP_OFFSET;
+    //public static double JUMP_OFFSET;
     public static boolean SHOW_MOB_HEALTH;
     public static List<String> WHITELISTED_PLAYERS = new ArrayList<>();
     public static List<String> CHECK_PLAYERS = new ArrayList<>();
@@ -28,7 +28,7 @@ public class ModConfigs {
             CONFIG = new File(FabricLoader.getInstance().getConfigDir().toString(), "pertix.json");
             if (CONFIG.createNewFile()) {
                 JSONObject json = new JSONObject();
-                JUMP_OFFSET = put("jumpoffset", 0.001d, json);
+                //JUMP_OFFSET = put("jumpoffset", 0.001d, json);
                 SHOW_MOB_HEALTH = put("showmobhealth", true, json);
                 WHITELISTED_PLAYERS = put("whitelistedplayers", List.of("Notch", "Dinnerbone"), json);
                 CHECK_PLAYERS = put("checkplayers", List.of("Skeppy", "BadBoyHalo"), json);
@@ -54,7 +54,7 @@ public class ModConfigs {
             } catch (JSONException ignored){
                 JSON = new JSONObject();
             }
-            JUMP_OFFSET = Double.parseDouble(String.valueOf(loadObject("jumpoffset", 0.001d)));
+            //JUMP_OFFSET = Double.parseDouble(String.valueOf(loadObject("jumpoffset", 0.001d)));
             SHOW_MOB_HEALTH = loadObject("showmobhealth", true);
             WHITELISTED_PLAYERS = loadObject("whitelistedplayers", List.of("Notch", "Dinnerbone"));
             CHECK_PLAYERS = loadObject("checkplayers", List.of("Skeppy", "BadBoyHalo"));

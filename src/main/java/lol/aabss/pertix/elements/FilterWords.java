@@ -18,7 +18,7 @@ public class FilterWords {
                 new KeyBinding(
                         "key.pertix.filterwords",
                         InputUtil.Type.KEYSYM,
-                        GLFW.GLFW_KEY_W,
+                        GLFW.GLFW_KEY_N,
                         "key.category.pertix"
                 )
         );
