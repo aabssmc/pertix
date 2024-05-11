@@ -54,7 +54,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             }
         }
         if (player != null && HealthIndicators.renderingenabled && player.getVehicle() != livingEntity && livingEntity != player && !livingEntity.isInvisibleTo(player)) {
-            Tessellator tessellator = Tessellator.getInstance();
+            /*Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();
 
             double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
@@ -144,8 +144,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
                 tessellator.draw();
                 matrixStack.pop();
             }
+*/
 
-            /*
             matrixStack.push();
 
             double d = this.dispatcher.getSquaredDistanceToCamera(player);
@@ -153,7 +153,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             matrixStack.translate(0, livingEntity.getHeight() + 0.5f, 0);
             if (this.hasLabel(livingEntity) && d <= 4096.0) {
                 matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
-                if (d < 100.0 && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(2) != null) {
+                if (d < 100.0 && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
                     matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
                 }
             }
@@ -223,7 +223,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             tessellator.draw();
 
             matrixStack.pop();
-             */
+
         }
     }
 

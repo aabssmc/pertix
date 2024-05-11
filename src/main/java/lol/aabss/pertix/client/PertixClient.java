@@ -110,7 +110,7 @@ public class PertixClient implements ClientModInitializer {
                     List<String> players = checkForPlayers();
                     if (!players.isEmpty()){
                         p.sendMessage(Text.literal("§6[PERTIX] §e"+Pertix.formatList(players.toArray(String[]::new)) + (players.size() == 1 ? " is " : " are ")+"online!"));
-                        p.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.MASTER, 10, 1);
+                        p.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 10, 1);
                     }
                 }
             }
@@ -129,7 +129,7 @@ public class PertixClient implements ClientModInitializer {
             if (p == null){
                 return;
             }
-            p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), SoundCategory.MASTER, 10, 2);
+            p.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), 10, 2);
             Text newtext;
             if (pinging) {
                 if (filterwordstoggle) {

@@ -54,9 +54,9 @@ public class WorldInfo {
     }
 
     private static String getLocation(World w){
-        BigDecimal x = BigDecimal.valueOf(w.getLevelProperties().getSpawnX()).setScale(2, RoundingMode.DOWN);
-        BigDecimal y = BigDecimal.valueOf(w.getLevelProperties().getSpawnY()).setScale(2, RoundingMode.DOWN);
-        BigDecimal z = BigDecimal.valueOf(w.getLevelProperties().getSpawnZ()).setScale(2, RoundingMode.DOWN);
+        BigDecimal x = BigDecimal.valueOf(w.getLevelProperties().getSpawnPos().getX()).setScale(2, RoundingMode.DOWN);
+        BigDecimal y = BigDecimal.valueOf(w.getLevelProperties().getSpawnPos().getY()).setScale(2, RoundingMode.DOWN);
+        BigDecimal z = BigDecimal.valueOf(w.getLevelProperties().getSpawnPos().getZ()).setScale(2, RoundingMode.DOWN);
         return x+", "+y+", "+z;
     }
 
