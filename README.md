@@ -1,5 +1,8 @@
 # pertix
 
+## IMPORTANT ANNOUOCEMENT:
+I will no longer be updating for old version, I will only update my fabric mods to the latest version. 
+
 ## needed:
 - [mod menu](https://modrinth.com/mod/modmenu)
 - [cloth config api](https://modrinth.com/mod/cloth-config)
