@@ -20,8 +20,6 @@ public class ModConfigs {
     public static boolean SHOW_MOB_HEALTH;
     public static List<String> WHITELISTED_PLAYERS = new ArrayList<>();
     public static List<String> CHECK_PLAYERS = new ArrayList<>();
-    public static List<String> FILTERED_WORDS = new ArrayList<>();
-    public static String FILLER_WORD;
 
     public static void registerConfigs() {
         try {
@@ -32,8 +30,6 @@ public class ModConfigs {
                 SHOW_MOB_HEALTH = put("showmobhealth", true, json);
                 WHITELISTED_PLAYERS = put("whitelistedplayers", List.of("Notch", "Dinnerbone"), json);
                 CHECK_PLAYERS = put("checkplayers", List.of("Skeppy", "BadBoyHalo"), json);
-                FILTERED_WORDS = put("filteredwords", List.of("aabss sucks", "aabss is dumb"), json);
-                FILLER_WORD = put("fillerword", "****", json);
                 try (FileWriter fileWriter = new FileWriter(CONFIG.getPath())) {
                     fileWriter.write(json.toString(4));
                 } catch (IOException e) {
@@ -58,8 +54,6 @@ public class ModConfigs {
             SHOW_MOB_HEALTH = loadObject("showmobhealth", true);
             WHITELISTED_PLAYERS = loadObject("whitelistedplayers", List.of("Notch", "Dinnerbone"));
             CHECK_PLAYERS = loadObject("checkplayers", List.of("Skeppy", "BadBoyHalo"));
-            FILTERED_WORDS = loadObject("filteredwords", List.of("aabss sucks", "aabss is dumb"));
-            FILLER_WORD = loadObject("fillerword", "****");
             saveConfig();
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -52,25 +52,6 @@ public class Pertix implements ModInitializer {
         }
     }
 
-    public static String formatList(Object[] list){
-        StringBuilder string = new StringBuilder();
-        int i = 0;
-        if (list.length == 1){
-            return list[0].toString();
-        }
-        for (Object obj : list){
-            if (i == list.length - 1) {
-                string.append(obj);
-            } else if (i == list.length - 2) {
-                string.append(obj).append(" and ");
-            } else {
-                string.append(obj).append(", ");
-            }
-            i++;
-        }
-        return string.toString();
-    }
-
 
     public static String[] newVersion() {
         HttpClient httpClient = HttpClient.newHttpClient();

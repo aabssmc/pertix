@@ -1,6 +1,5 @@
 package lol.aabss.pertix.util;
 
-import com.google.common.collect.Lists;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -32,7 +31,7 @@ public class PlayerArgumentType implements ArgumentType<PlayerEntity> {
         reader.readString();
         List<AbstractClientPlayerEntity> players = MinecraftClient.getInstance().world.getPlayers();
         for (PlayerEntity plr : players){
-            if(plr.getName().getString().equals(name) && !PlayerUtils.isNpc(plr.getName())){
+            if(plr.getName().getString().equals(name) && !isNpc(plr.getName())){
                 return plr;
             }
         }
@@ -41,12 +40,20 @@ public class PlayerArgumentType implements ArgumentType<PlayerEntity> {
     }
 
 
+    public static boolean isNpc(Text p){
+        return (p.contains(Text.literal("[")) ||
+                p.contains(Text.literal("]")) ||
+                p.contains(Text.literal(" ")) ||
+                p.contains(Text.literal("-"))
+        );
+    }
+
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         if (context.getSource() instanceof FabricClientCommandSource source) {
             List<String> names = new ArrayList<>();
             source.getPlayer().clientWorld.getPlayers().forEach(pl -> {
-                if (!PlayerUtils.isNpc(pl.getName())) {
+                if (!isNpc(pl.getName())) {
                     names.add(pl.getName().getString());
                 }
             });

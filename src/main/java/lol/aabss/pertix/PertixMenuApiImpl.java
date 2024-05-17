@@ -45,26 +45,6 @@ public class PertixMenuApiImpl implements ModMenuApi {
                     .setTooltip(Text.literal("The players that you can still see with hide players on."))
                     .setSaveConsumer(HidePlayers::saveConfig)
                     .build());
-
-            ConfigCategory checker = builder.getOrCreateCategory(Text.literal("Player Checker"));
-            checker.addEntry(ConfigEntryBuilder.create()
-                    .startStrList(Text.literal("(PLAYER CHECKER) Checked Players"), ModConfigs.CHECK_PLAYERS)
-                    .setDefaultValue(() -> ModConfigs.CHECK_PLAYERS)
-                    .setTooltip(Text.literal("The players that will make a sound if they are online."))
-                    .setSaveConsumer(PlayerChecker::saveConfig)
-                    .build());
-
-            ConfigCategory filterWords = builder.getOrCreateCategory(Text.literal("Filter Words"));
-            filterWords.addEntry(ConfigEntryBuilder.create()
-                    .startStrList(Text.literal("(FILTER WORDS) Filtered Words"), ModConfigs.FILTERED_WORDS)
-                    .setDefaultValue(() -> ModConfigs.FILTERED_WORDS)
-                    .setSaveConsumer(FilterWords::saveWords)
-                    .build());
-            filterWords.addEntry(ConfigEntryBuilder.create()
-                    .startStrField(Text.literal("(FILTER WORDS) Filler Word"), ModConfigs.FILLER_WORD)
-                    .setDefaultValue(() -> ModConfigs.FILLER_WORD)
-                    .setSaveConsumer(FilterWords::saveFiller)
-                    .build());
             return builder.build();
         };
     }

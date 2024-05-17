@@ -1,7 +1,6 @@
 package lol.aabss.pertix.mixin;
 
 import lol.aabss.pertix.elements.HidePlayers;
-import lol.aabss.pertix.util.PlayerUtils;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,6 +11,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static lol.aabss.pertix.util.PlayerArgumentType.isNpc;
 
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
@@ -26,7 +27,7 @@ public class EntityRenderDispatcherMixin {
         if (HidePlayers.getWhitelistedPlayers().contains(Text.of(player.getName().getString().toLowerCase()))) {
             return;
         }
-        if (PlayerUtils.isNpc(player.getName())){
+        if (isNpc(player.getName())){
             return;
         }
         ci.cancel();
